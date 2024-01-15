@@ -1,0 +1,7 @@
+.nav-bar{
+    background-color: #7c718b;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
