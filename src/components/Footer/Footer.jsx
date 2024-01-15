@@ -3,7 +3,7 @@ import "./style.css"
 const Footer = () => {
   return (
     
-  <footer className="sticky footer w-full bottom-0">
+  <footer className="footer w-full">
   <div className="flex justify-between">
       <span className="flex items-center mx-5">
           <a className="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
