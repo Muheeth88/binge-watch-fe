@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import Footer from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
 import Login from "./pages/Login/login";
@@ -14,6 +14,7 @@ function App() {
 			<Router>
 			<Header />
 				<Routes>
+					<Route path="/" element={<Navigate to="/home" replace />} />
 					<Route path="/login" element={<Login />}></Route>
 					<Route path="/signup" element={<Signup />}></Route>
 					<Route element={<PrivateRoutes />}>

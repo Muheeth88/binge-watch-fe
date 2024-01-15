@@ -1,9 +1,30 @@
-import React from "react";
+import { useState } from "react";
 import "./style.css";
-import Container from '@mui/material/Container';
-import {Link } from "react-router-dom"
+import Container from "@mui/material/Container";
+import { Link } from "react-router-dom";
+import { api } from "../../config/axiosConfig";
 
 const Login = () => {
+	const [formData, setFormData] = useState({
+		email: "",
+		password: "",
+	});
+
+	const handleChange = (e) => {
+		const { name, value } = e.target;
+		setFormData({ ...formData, [name]: value });
+	};
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		try {
+			const response = await api.post("/users/login", formData);
+			localStorage.setItem("jwt", response?.data?.data?.jwtToken);
+		} catch (error) {
+			console.error("Error submitting the form:", error);
+		}
+	};
+
 	return (
 		<div>
 			<Container maxWidth="sm">
@@ -12,19 +33,25 @@ const Login = () => {
 						<div className="text-xl cursor-pointer flex flex-col justify-center items-center mt-5 md:mt-0">
 							<h1 className="font-semibold text-3xl text-gray-700 m-2">Log In</h1>
 						</div>
-						<form>
+						<form onSubmit={handleSubmit}>
 							<div className="flex flex-col justify-center items-center mt-10 md:mt-4 space-y-6 md:space-y-8">
 								<div className="">
 									<input
 										type="email"
+										name="email"
+										value={formData.email}
 										placeholder="Email"
+										onChange={handleChange}
 										className=" bg-gray-100 rounded-lg px-5 py-2 focus:border border-violet-600 focus:outline-none text-black placeholder:text-gray-600 placeholder:opacity-50 font-semibold md:w-72 lg:w-[340px]"
 									/>
 								</div>
 								<div className="">
 									<input
 										type="password"
+										name="password"
+										value={formData.password}
 										placeholder="Password"
+										onChange={handleChange}
 										className=" bg-gray-100 rounded-lg px-5 py-2 focus:border border-violet-600 focus:outline-none text-black placeholder:text-gray-600 placeholder:opacity-50 font-semibold md:w-72 lg:w-[340px]"
 									/>
 								</div>
@@ -39,7 +66,6 @@ const Login = () => {
 							</div>
 						</form>
 						<div className="text-center my-6 flex flex-col text-sm font-bold text-gray-400 hover:text-violet-500 m-1">
-							
 							<Link to="/signup">Not a User? Create New Account</Link>
 						</div>
 					</div>
