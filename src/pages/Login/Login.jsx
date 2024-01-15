@@ -1,10 +1,11 @@
 import { useState } from "react";
 import "./style.css";
 import Container from "@mui/material/Container";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { api } from "../../config/axiosConfig";
 
 const Login = () => {
+	const navigate = useNavigate();
 	const [formData, setFormData] = useState({
 		email: "",
 		password: "",
@@ -20,6 +21,7 @@ const Login = () => {
 		try {
 			const response = await api.post("/users/login", formData);
 			localStorage.setItem("jwt", response?.data?.data?.jwtToken);
+			navigate("/home")
 		} catch (error) {
 			console.error("Error submitting the form:", error);
 		}

@@ -9,3 +9,79 @@
 	text-decoration: none;
 	scroll-behavior: smooth;
 }
+
+
+/* Buttons - start */
+.button-pink {
+	background-color: #ea4c89;
+	border-radius: 8px;
+	border-style: none;
+	color: #ffffff;
+	cursor: pointer;
+	font-size: 14px;
+	font-weight: 500;
+	outline: none;
+	padding: 8px 16px;
+	text-align: center;
+	text-decoration: none;
+	transition: color 100ms;
+	touch-action: manipulation;
+  }
+  .button-pink:disabled {
+	background-color: #ec87ad;
+	cursor: not-allowed;
+  }
+  .button-pink:hover,
+  .button-pink:focus {
+	background-color: #eb5d94;
+  }
+  
+  .button-blue {
+	background-color: #0c78b7;
+	border-radius: 8px;
+	border-style: none;
+	box-sizing: border-box;
+	color: #ffffff;
+	cursor: pointer;
+	font-size: 14px;
+	font-weight: 500;
+	outline: none;
+	padding: 8px 16px;
+	text-align: center;
+	text-decoration: none;
+	transition: color 100ms;
+	touch-action: manipulation;
+  }
+  .button-blue:disabled {
+	background-color: #74b2e7;
+	cursor: not-allowed;
+  }
+  .button-blue:hover {
+	background-color: #3f82bb;
+  }
+  
+  .button-white {
+	background-color: #fff;
+	border-radius: 8px;
+	border: 1px solid #babfc3;
+	box-sizing: border-box;
+	color: #202223;
+	cursor: pointer;
+	font-size: 14px;
+	font-weight: 500;
+	outline: none;
+	padding: 8px 16px;
+	position: relative;
+	text-align: center;
+	text-decoration: none;
+	transition: color 100ms;
+	touch-action: manipulation;
+  }
+  .button-white:hover {
+	background: #f6f6f7;
+	outline: 1px solid transparent;
+  }
+  .button-white:disabled {
+	cursor: not-allowed;
+  }
+  
