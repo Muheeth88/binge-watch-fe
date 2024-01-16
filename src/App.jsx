@@ -7,6 +7,7 @@ import Signup from "./pages/Signup/signup";
 import Home from "./pages/Home/Home";
 import PrivateRoutes from "./utils/PrivateRoutes";
 import Profile from "./pages/Profile/Profile";
+import AddMovie from "./adminPages/AddMovie/AddMovie";
 
 function App() {
 	return (
@@ -21,6 +22,7 @@ function App() {
 						<Route path="/home" element={<Home />} />
 					</Route>
 					<Route path="/profile" element={<Profile />} />
+					<Route path="/add-movie" element={<AddMovie/>}/>
 				</Routes>
 			<Footer />
 			</Router>

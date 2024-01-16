@@ -8,7 +8,7 @@ const Profile = () => {
 	const [isAdmin, setIsAdmin] = useState(false);
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
-	const [role, setRole] = useState("USER");
+	const [role, setRole] = useState();
 
 	useEffect(() => {
 		fetchUser();
@@ -21,8 +21,8 @@ const Profile = () => {
 			setName(response.data.data.userName);
 			setEmail(response.data.data.email);
 			setRole(response.data.data.role);
-			role === "ADMIN" ? setIsAdmin(true) : setIsAdmin(false);
-			console.log(isAdmin)
+			response.data.data.role === "ADMIN" ? setIsAdmin(true) : setIsAdmin(false);
+			console.log(isAdmin);
 		} catch (error) {
 			console.error(error.message);
 		}
@@ -67,12 +67,16 @@ const Profile = () => {
 										</div>
 										{isAdmin && (
 											<div className="cursor-pointer text-white my-2 py-2 w-full bg-slate-500 flex justify-center">
-												+ Add Movie
+												<Link to="/add-movie">+ Add Movie</Link>
 											</div>
 										)}
 
 										<div className="my-2 flex justify-end">
-											{!isLoggedIn && <button className="button-blue"><Link to="/login">Sign In</Link></button>}
+											{!isLoggedIn && (
+												<button className="button-blue">
+													<Link to="/login">Sign In</Link>
+												</button>
+											)}
 
 											{isLoggedIn && (
 												<button onClick={handleLogOut} className="button-pink">
