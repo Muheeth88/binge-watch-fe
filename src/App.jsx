@@ -5,26 +5,27 @@ import Header from "./components/Header/Header";
 import Login from "./pages/Login/login";
 import Signup from "./pages/Signup/signup";
 import Home from "./pages/Home/Home";
-import PrivateRoutes from "./utils/PrivateRoutes";
 import Profile from "./pages/Profile/Profile";
 import AddMovie from "./adminPages/AddMovie/AddMovie";
+import AdminRoutes from "./utils/AdminRoutes";
 
 function App() {
 	return (
 		<>
 			<Router>
-			<Header />
+				<Header />
 				<Routes>
 					<Route path="/" element={<Navigate to="/home" replace />} />
 					<Route path="/login" element={<Login />}></Route>
 					<Route path="/signup" element={<Signup />}></Route>
-					<Route element={<PrivateRoutes />}>
-						<Route path="/home" element={<Home />} />
-					</Route>
+					<Route path="/home" element={<Home />} />
 					<Route path="/profile" element={<Profile />} />
-					<Route path="/add-movie" element={<AddMovie/>}/>
+					{/* Admin Routes */}
+					<Route element={<AdminRoutes />}>
+						<Route path="/add-movie" element={<AddMovie />} />
+					</Route>
 				</Routes>
-			<Footer />
+				<Footer />
 			</Router>
 		</>
 	);
