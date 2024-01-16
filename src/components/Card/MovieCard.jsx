@@ -5,11 +5,12 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { format } from "date-fns";
 
 const MovieCard = (props) => {
 	const { title, tagline, countryOfOrigin, originalLanguage, releaseDate, genre } = props;
 	return (
-		<Card className="m-5" sx={{ maxWidth: 250 }}>
+		<Card className="m-5" sx={{ maxWidth: 250, width:240 }}>
 			<CardMedia sx={{ height: 140 }} image="/static/images/cards/contemplative-reptile.jpg" title="green iguana" />
 			<CardContent>
 				<Typography gutterBottom variant="h5" component="div">
@@ -25,7 +26,7 @@ const MovieCard = (props) => {
 					Language: {originalLanguage}
 				</Typography>
 				<Typography variant="body2" color="text.secondary">
-					Release Date: {releaseDate}
+					Release Date: {format(releaseDate, "dd MMMM yyyy")}
 				</Typography>
 				<Typography variant="body2" color="text.secondary">
 					Genre: {genre}
