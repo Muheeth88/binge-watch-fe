@@ -21,6 +21,7 @@ const Login = () => {
 		try {
 			const response = await api.post("/users/login", formData);
 			localStorage.setItem("jwt", response?.data?.data?.jwtToken);
+			localStorage.setItem("role", response?.data?.data?.user?.role);
 			navigate("/home")
 		} catch (error) {
 			console.error("Error submitting the form:", error);
