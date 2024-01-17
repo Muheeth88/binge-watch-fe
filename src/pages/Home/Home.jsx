@@ -5,7 +5,7 @@ import Container from "@mui/material/Container";
 import { useNavigate, Link } from "react-router-dom";
 
 const Home = () => {
-	const navigate=useNavigate()
+	const navigate = useNavigate();
 	const [movies, setMovies] = useState([]);
 
 	useEffect(() => {
@@ -22,15 +22,15 @@ const Home = () => {
 	};
 
 	const onMovieCardClick = (movieId) => {
-		navigate(`/movie-details/${movieId}`)
-	} 
+		navigate(`/movie-details/${movieId}`);
+	};
 
 	return (
-		<Container>
-			<div className="flex flex-wrap">
-				{movies &&
-					movies.map((movie) => (
-						<span key={movie._id} onClick={() => onMovieCardClick(movie._id)}>
+		// <Container>
+		<div className="flex flex-wrap mx-auto w-full justify-center">
+			{movies &&
+				movies.map((movie) => (
+					<span key={movie._id} onClick={() => onMovieCardClick(movie._id)}>
 						<MovieCard
 							key={movie._id}
 							title={movie.title}
@@ -39,11 +39,13 @@ const Home = () => {
 							countryOfOrigin={movie.countryOfOrigin}
 							originalLanguage={movie.originalLanguage}
 							genre={movie.genre}
+							isFavourite={movie.isFavourite}
+							isInWatchlist={movie.isInWatchlist}
 						/>
-						</span>
-					))}
-			</div>
-		</Container>
+					</span>
+				))}
+		</div>
+		// </Container>
 	);
 };
 

@@ -6,11 +6,15 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { format } from "date-fns";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import AddToQueueIcon from "@mui/icons-material/AddToQueue";
+import AddBoxIcon from "@mui/icons-material/AddBox";
 
 const MovieCard = (props) => {
-	const { title, tagline, countryOfOrigin, originalLanguage, releaseDate, genre } = props;
+	const { title, tagline, countryOfOrigin, originalLanguage, releaseDate, genre, isInWatchlist, isFavourite } = props;
 	return (
-		<Card className="m-5" sx={{ maxWidth: 250, width:240 }}>
+		<Card className="m-5" sx={{ width: 300 }}>
 			<CardMedia sx={{ height: 140 }} image="/static/images/cards/contemplative-reptile.jpg" title="green iguana" />
 			<CardContent>
 				<Typography gutterBottom variant="h5" component="div">
@@ -33,8 +37,39 @@ const MovieCard = (props) => {
 				</Typography>
 			</CardContent>
 			<CardActions>
-				<Button size="small">Favourite</Button>
-				<Button size="small">Watchlist</Button>
+				{!isFavourite && (
+					<Button size="small">
+						<span className="icon mx-2">
+							<FavoriteBorderIcon color="primary" />
+						</span>
+						Favourite
+					</Button>
+				)}
+
+				{isFavourite && (
+					<Button size="small">
+						<span className="icon mx-2">
+							<FavoriteIcon color="primary" />
+						</span>
+						Favourited
+					</Button>
+				)}
+				{!isInWatchlist && (
+					<Button size="small">
+						<span className="icon mx-2">
+							<AddBoxIcon />
+						</span>
+						Watchlist
+					</Button>
+				)}
+				{isInWatchlist && (
+					<Button size="small">
+						<span className="icon mx-2">
+							<AddToQueueIcon />
+						</span>
+						Watchlisted
+					</Button>
+				)}
 			</CardActions>
 		</Card>
 	);
