@@ -8,6 +8,7 @@ import Home from "./pages/Home/Home";
 import Profile from "./pages/Profile/Profile";
 import AddMovie from "./adminPages/AddMovie/AddMovie";
 import AdminRoutes from "./utils/AdminRoutes";
+import MovieDetails from "./pages/MovieDetails/MovieDetails";
 
 function App() {
 	return (
@@ -18,7 +19,10 @@ function App() {
 					<Route path="/" element={<Navigate to="/home" replace />} />
 					<Route path="/login" element={<Login />}></Route>
 					<Route path="/signup" element={<Signup />}></Route>
-					<Route path="/home" element={<Home />} />
+
+					<Route path="/home" element={<Home />}></Route>
+					<Route path="movie-details/:movieId" element={<MovieDetails />} />
+
 					<Route path="/profile" element={<Profile />} />
 					{/* Admin Routes */}
 					<Route element={<AdminRoutes />}>

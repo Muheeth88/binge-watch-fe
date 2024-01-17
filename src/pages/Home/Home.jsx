@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import MovieCard from "../../components/Card/MovieCard";
 import { api } from "../../config/axiosConfig";
-import Container from '@mui/material/Container';
+import Container from "@mui/material/Container";
+import { useNavigate, Link } from "react-router-dom";
 
 const Home = () => {
+	const navigate=useNavigate()
 	const [movies, setMovies] = useState([]);
 
 	useEffect(() => {
@@ -19,23 +21,29 @@ const Home = () => {
 		}
 	};
 
+	const onMovieCardClick = (movieId) => {
+		navigate(`/movie-details/${movieId}`)
+	} 
+
 	return (
-    <Container>
-		<div className="flex flex-wrap">
-			{movies &&
-				movies.map((movie) => (
-					<MovieCard
-            key= {movie._id}
-						title={movie.title}
-						tagline={movie.tagline}
-						releaseDate={movie.releaseDate}
-						countryOfOrigin={movie.countryOfOrigin}
-            originalLanguage={movie.originalLanguage}
-						genre={movie.genre}
-					/>
-				))}
-		</div>
-    </Container>
+		<Container>
+			<div className="flex flex-wrap">
+				{movies &&
+					movies.map((movie) => (
+						<span key={movie._id} onClick={() => onMovieCardClick(movie._id)}>
+						<MovieCard
+							key={movie._id}
+							title={movie.title}
+							tagline={movie.tagline}
+							releaseDate={movie.releaseDate}
+							countryOfOrigin={movie.countryOfOrigin}
+							originalLanguage={movie.originalLanguage}
+							genre={movie.genre}
+						/>
+						</span>
+					))}
+			</div>
+		</Container>
 	);
 };
 
