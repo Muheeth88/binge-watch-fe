@@ -55,7 +55,10 @@ const MovieDetails = () => {
 	const addReview = async () => {
 		try {
 			await api.post(`reviews/add-review/${movieId}`, { comment });
+			fetchReviews();
 			handleClose();
+			setCommentId("");
+			setComment("");
 		} catch (error) {
 			console.error(error.message);
 		}
@@ -64,7 +67,10 @@ const MovieDetails = () => {
 	const editReview = async () => {
 		try {
 			await api.patch(`reviews/edit-review/${commentId}`, { comment });
+			fetchReviews();
 			handleClose();
+			setCommentId("");
+			setComment("");
 		} catch (error) {
 			console.error(error.message);
 		}
@@ -72,8 +78,10 @@ const MovieDetails = () => {
 
 	const deleteReview = async (reviewId) => {
 		try {
-			const response = await api.delete(`reviews/delete-review/${reviewId}`);
-			console.log(response);
+			await api.delete(`reviews/delete-review/${reviewId}`);
+			setCommentId("");
+			setComment("");
+			fetchReviews();
 		} catch (error) {
 			console.error(error.message);
 		}
@@ -89,6 +97,8 @@ const MovieDetails = () => {
 	};
 
 	const handleClose = () => {
+		setCommentId("");
+		setComment("");
 		setOpen(false);
 	};
 

@@ -10,9 +10,49 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import AddToQueueIcon from "@mui/icons-material/AddToQueue";
 import AddBoxIcon from "@mui/icons-material/AddBox";
+import { api } from "../../config/axiosConfig";
 
 const MovieCard = (props) => {
-	const { title, tagline, countryOfOrigin, originalLanguage, releaseDate, genre, isInWatchlist, isFavourite } = props;
+	const {
+		title,
+		tagline,
+		countryOfOrigin,
+		originalLanguage,
+		releaseDate,
+		genre,
+		isInWatchlist,
+		isFavourite,
+		movieId,
+		reload,
+	} = props;
+
+	const handleFavourite = async (event, movieId) => {
+		event.stopPropagation();
+		try {
+			if (!isFavourite) {
+				await api.post(`/favourites/add-to-favourites/${movieId}`);
+			} else if (isFavourite) {
+				await api.post(`/favourites/remove-from-favourites/${movieId}`);
+			}
+			reload();
+		} catch (error) {
+			console.error(error.message);
+		}
+	};
+
+	const handleWatchlist = async (event, movieId) => {
+		event.stopPropagation();
+		try {
+			if (!isInWatchlist) {
+				await api.post(`/watchlist/add-to-watchlist/${movieId}`);
+			} else if (isInWatchlist) {
+				await api.post(`/watchlist/remove-from-watchlist/${movieId}`);
+			}
+			reload();
+		} catch (error) {
+			console.error(error.message);
+		}
+	};
 	return (
 		<Card className="m-5" sx={{ width: 300 }}>
 			<CardMedia sx={{ height: 140 }} image="/static/images/cards/contemplative-reptile.jpg" title="green iguana" />
@@ -38,7 +78,7 @@ const MovieCard = (props) => {
 			</CardContent>
 			<CardActions>
 				{!isFavourite && (
-					<Button size="small">
+					<Button onClick={(e) => handleFavourite(e, movieId)} size="small">
 						<span className="icon mx-2">
 							<FavoriteBorderIcon color="primary" />
 						</span>
@@ -47,7 +87,7 @@ const MovieCard = (props) => {
 				)}
 
 				{isFavourite && (
-					<Button size="small">
+					<Button onClick={(e) => handleFavourite(e, movieId)} size="small">
 						<span className="icon mx-2">
 							<FavoriteIcon color="primary" />
 						</span>
@@ -55,7 +95,7 @@ const MovieCard = (props) => {
 					</Button>
 				)}
 				{!isInWatchlist && (
-					<Button size="small">
+					<Button onClick={(e) => handleWatchlist(e, movieId)} size="small">
 						<span className="icon mx-2">
 							<AddBoxIcon />
 						</span>
@@ -63,7 +103,7 @@ const MovieCard = (props) => {
 					</Button>
 				)}
 				{isInWatchlist && (
-					<Button size="small">
+					<Button onClick={(e) => handleWatchlist(e, movieId)} size="small">
 						<span className="icon mx-2">
 							<AddToQueueIcon />
 						</span>

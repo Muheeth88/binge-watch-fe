@@ -33,6 +33,7 @@ const Home = () => {
 					<span key={movie._id} onClick={() => onMovieCardClick(movie._id)}>
 						<MovieCard
 							key={movie._id}
+							movieId={movie._id}
 							title={movie.title}
 							tagline={movie.tagline}
 							releaseDate={movie.releaseDate}
@@ -41,6 +42,7 @@ const Home = () => {
 							genre={movie.genre}
 							isFavourite={movie.isFavourite}
 							isInWatchlist={movie.isInWatchlist}
+							reload={fetchMovies}
 						/>
 					</span>
 				))}
