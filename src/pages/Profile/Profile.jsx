@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { api } from "../../config/axiosConfig";
 import { useNavigate, Link } from "react-router-dom";
 import DialogTitle from "@mui/material/DialogTitle";
-import DialogActions from '@mui/material/DialogActions';
+import DialogActions from "@mui/material/DialogActions";
 import Dialog from "@mui/material/Dialog";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 
 const Profile = () => {
 	const navigate = useNavigate();
@@ -31,11 +31,11 @@ const Profile = () => {
 		try {
 			const response = await api.get("/users/get-user-profile");
 			setIsLoggedIn(true);
-			setName(response.data.data[0].userName);
-			setEmail(response.data.data[0].email);
-			setRole(response.data.data[0].role);
-			setFavourites(response.data.data[0].favouriteMovies);
-			setWatchlist(response.data.data[0].watchlistMovies);
+			setName(response.data.data.userName);
+			setEmail(response.data.data.email);
+			setRole(response.data.data.role);
+			setFavourites(response.data.data.favouriteMovies);
+			setWatchlist(response.data.data.watchlistMovies);
 			response.data.data.role === "ADMIN" ? setIsAdmin(true) : setIsAdmin(false);
 			console.log(isAdmin);
 		} catch (error) {
@@ -89,7 +89,9 @@ const Profile = () => {
 											<button onClick={handleClickOpen} className="button-blue my-1">
 												My WatchList
 											</button>
-											<button onClick={handleFavDiaOpen} className="button-blue my-1">Favourite Movies</button>
+											<button onClick={handleFavDiaOpen} className="button-blue my-1">
+												Favourite Movies
+											</button>
 										</div>
 
 										<div className="font-bold text-2xl text-blue-500 ">{role}</div>
