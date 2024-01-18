@@ -34,7 +34,7 @@ const MovieDetails = () => {
 	const fetchMovieDetails = async () => {
 		try {
 			const response = await api.get(`/movies/get-movie/${movieId}`);
-			const movie = response.data.data[0];
+			const movie = response.data.data;
 			setMovie(movie);
 		} catch (error) {
 			console.error(error.message);
@@ -145,7 +145,9 @@ const MovieDetails = () => {
 								<div className="md:w-2/3 m-4 ">
 									<div className="flex text-gray-500 text-sm m-2">
 										<div className="m-1 font-bold">Released on</div>
-										{/* <div className="m-1">{format((new Date(movie?.releaseDate)), "dd MMMM yyyy")}</div> */}
+										{/* {movie.releaseDate && <div className="m-1">{format(movie.releaseDate, "dd MMMM yyyy")}</div>} */}
+										
+						
 									</div>
 									<div className="font-bold text-black text-xl m-2">{movie.title}</div>
 									<div className="text-sm text-gray-500 mt-4 m-2">
