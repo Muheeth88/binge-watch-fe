@@ -1,6 +1,14 @@
 import { useEffect, useState } from "react";
 import { api } from "../../config/axiosConfig";
 import { useNavigate, Link } from "react-router-dom";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogActions from '@mui/material/DialogActions';
+import Dialog from "@mui/material/Dialog";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import Button from '@mui/material/Button';
 
 const Profile = () => {
 	const navigate = useNavigate();
@@ -9,6 +17,11 @@ const Profile = () => {
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [role, setRole] = useState();
+	const [open, setOpen] = useState(false);
+	const [openFavDialog, setOpenFavDialog] = useState(false);
+
+	const [watchlist, setWatchlist] = useState([]);
+	const [favourites, setFavourites] = useState([]);
 
 	useEffect(() => {
 		fetchUser();
@@ -18,9 +31,11 @@ const Profile = () => {
 		try {
 			const response = await api.get("/users/get-user-profile");
 			setIsLoggedIn(true);
-			setName(response.data.data.userName);
-			setEmail(response.data.data.email);
-			setRole(response.data.data.role);
+			setName(response.data.data[0].userName);
+			setEmail(response.data.data[0].email);
+			setRole(response.data.data[0].role);
+			setFavourites(response.data.data[0].favouriteMovies);
+			setWatchlist(response.data.data[0].watchlistMovies);
 			response.data.data.role === "ADMIN" ? setIsAdmin(true) : setIsAdmin(false);
 			console.log(isAdmin);
 		} catch (error) {
@@ -36,6 +51,20 @@ const Profile = () => {
 		} catch (error) {
 			console.log(error.message);
 		}
+	};
+
+	const handleClickOpen = (e) => {
+		setOpen(true);
+	};
+	const handleClose = () => {
+		setOpen(false);
+	};
+
+	const handleFavDiaOpen = (e) => {
+		setOpenFavDialog(true);
+	};
+	const handleFavDiaClose = () => {
+		setOpenFavDialog(false);
 	};
 
 	return (
@@ -57,8 +86,10 @@ const Profile = () => {
 									</div>
 									<div className="flex flex-col w-full md:w-2/3  mx-10">
 										<div className="my-2">
-											<button className="button-blue my-1">My WatchList</button>
-											<button className="button-blue my-1">Liked Movies</button>
+											<button onClick={handleClickOpen} className="button-blue my-1">
+												My WatchList
+											</button>
+											<button onClick={handleFavDiaOpen} className="button-blue my-1">Favourite Movies</button>
 										</div>
 
 										<div className="font-bold text-2xl text-blue-500 ">{role}</div>
@@ -87,6 +118,38 @@ const Profile = () => {
 									</div>
 								</div>
 							</div>
+							<Dialog onClose={handleClose} open={open}>
+								<DialogTitle>My Watchlist</DialogTitle>
+								<List sx={{ pt: 0 }}>
+									{watchlist &&
+										watchlist.map((w) => (
+											<ListItem disableGutters key={w._id}>
+												<ListItemButton>
+													<ListItemText primary={w.title} />
+												</ListItemButton>
+											</ListItem>
+										))}
+								</List>
+								<DialogActions>
+									<Button onClick={handleClose}>Close</Button>
+								</DialogActions>
+							</Dialog>
+							<Dialog onClose={handleFavDiaClose} open={openFavDialog}>
+								<DialogTitle>My Favourites</DialogTitle>
+								<List sx={{ pt: 0 }}>
+									{favourites &&
+										favourites.map((w) => (
+											<ListItem disableGutters key={w._id}>
+												<ListItemButton>
+													<ListItemText primary={w.title} />
+												</ListItemButton>
+											</ListItem>
+										))}
+								</List>
+								<DialogActions>
+									<Button onClick={handleFavDiaClose}>Close</Button>
+								</DialogActions>
+							</Dialog>
 						</div>
 					</div>
 				</div>
