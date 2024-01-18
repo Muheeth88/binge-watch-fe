@@ -12,6 +12,10 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import AddToQueueIcon from "@mui/icons-material/AddToQueue";
+import AddBoxIcon from "@mui/icons-material/AddBox";
 
 const MovieDetails = () => {
 	const { movieId } = useParams();
@@ -32,6 +36,32 @@ const MovieDetails = () => {
 			const response = await api.get(`/movies/get-movie/${movieId}`);
 			const movie = response.data.data[0];
 			setMovie(movie);
+		} catch (error) {
+			console.error(error.message);
+		}
+	};
+
+	const handleFavourite = async () => {
+		try {
+			if (!movie.isFavourite) {
+				await api.post(`/favourites/add-to-favourites/${movieId}`);
+			} else if (movie.isFavourite) {
+				await api.post(`/favourites/remove-from-favourites/${movieId}`);
+			}
+			fetchMovieDetails();
+		} catch (error) {
+			console.error(error.message);
+		}
+	};
+
+	const handleWatchlist = async () => {
+		try {
+			if (!movie.isInWatchlist) {
+				await api.post(`/watchlist/add-to-watchlist/${movieId}`);
+			} else if (movie.isInWatchlist) {
+				await api.post(`/watchlist/remove-from-watchlist/${movieId}`);
+			}
+			fetchMovieDetails();
 		} catch (error) {
 			console.error(error.message);
 		}
@@ -136,6 +166,41 @@ const MovieDetails = () => {
 											<span className="mx-2 text-lg font-bold text-left">Rating</span>
 											<span> 9/ 10</span>
 										</p>
+									</div>
+									<div className="my-2">
+										{!movie.isFavourite && (
+											<Button onClick={() => handleFavourite()} size="small">
+												<span className="icon mx-2">
+													<FavoriteBorderIcon color="primary" />
+												</span>
+												Favourite
+											</Button>
+										)}
+
+										{movie.isFavourite && (
+											<Button onClick={() => handleFavourite()} size="small">
+												<span className="icon mx-2">
+													<FavoriteIcon color="primary" />
+												</span>
+												Favourited
+											</Button>
+										)}
+										{!movie.isInWatchlist && (
+											<Button onClick={(e) => handleWatchlist(e, movieId)} size="small">
+												<span className="icon mx-2">
+													<AddBoxIcon />
+												</span>
+												Watchlist
+											</Button>
+										)}
+										{movie.isInWatchlist && (
+											<Button onClick={(e) => handleWatchlist(e, movieId)} size="small">
+												<span className="icon mx-2">
+													<AddToQueueIcon />
+												</span>
+												Watchlisted
+											</Button>
+										)}
 									</div>
 								</div>
 							</div>
