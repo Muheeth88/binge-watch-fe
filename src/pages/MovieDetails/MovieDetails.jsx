@@ -16,6 +16,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import AddToQueueIcon from "@mui/icons-material/AddToQueue";
 import AddBoxIcon from "@mui/icons-material/AddBox";
+import { toast } from "react-toastify";
 
 const MovieDetails = () => {
 	const { movieId } = useParams();
@@ -25,7 +26,7 @@ const MovieDetails = () => {
 	const [comment, setComment] = useState("");
 	const [open, setOpen] = useState(false);
 	const [commentId, setCommentId] = useState("");
-	const [openAlert, setOpenAlert] = useState(false)
+	const [openAlert, setOpenAlert] = useState(false);
 
 	useEffect(() => {
 		fetchMovieDetails();
@@ -86,6 +87,7 @@ const MovieDetails = () => {
 	const addReview = async () => {
 		try {
 			await api.post(`reviews/add-review/${movieId}`, { comment });
+			toast.success('Comment posted!');
 			fetchReviews();
 			handleClose();
 			setCommentId("");
@@ -98,21 +100,11 @@ const MovieDetails = () => {
 	const editReview = async () => {
 		try {
 			await api.patch(`reviews/edit-review/${commentId}`, { comment });
+			toast.success('Comment edited!');
 			fetchReviews();
 			handleClose();
 			setCommentId("");
 			setComment("");
-		} catch (error) {
-			console.error(error.message);
-		}
-	};
-
-	const deleteReview = async (reviewId) => {
-		try {
-			await api.delete(`reviews/delete-review/${reviewId}`);
-			setCommentId("");
-			setComment("");
-			fetchReviews();
 		} catch (error) {
 			console.error(error.message);
 		}
@@ -140,25 +132,26 @@ const MovieDetails = () => {
 			setComment(res.data.data.comment);
 		}
 		setOpenAlert(true);
-	}
+	};
 
 	const handleCloseAlert = () => {
 		setCommentId("");
 		setComment("");
-		setOpenAlert(false)
-	}
+		setOpenAlert(false);
+	};
 
-	const handleDeleteComment = async() => {
+	const handleDeleteComment = async () => {
 		try {
 			await api.delete(`reviews/delete-review/${commentId}`);
+			toast.success('Comment deleted!');
 			setCommentId("");
 			setComment("");
 			fetchReviews();
 		} catch (error) {
 			console.error(error.message);
 		}
-			setOpenAlert(false)
-	}
+		setOpenAlert(false);
+	};
 
 	return (
 		<>
@@ -308,9 +301,7 @@ const MovieDetails = () => {
 			>
 				<DialogTitle id="alert-dialog-title">{"Delete comment?"}</DialogTitle>
 				<DialogContent>
-					<DialogContentText id="alert-dialog-description">
-						{comment}
-					</DialogContentText>
+					<DialogContentText id="alert-dialog-description">{comment}</DialogContentText>
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={handleCloseAlert}>Cancel</Button>

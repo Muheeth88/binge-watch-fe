@@ -9,6 +9,8 @@ import Profile from "./pages/Profile/Profile";
 import AddMovie from "./adminPages/AddMovie/AddMovie";
 import AdminRoutes from "./utils/AdminRoutes";
 import MovieDetails from "./pages/MovieDetails/MovieDetails";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
 	return (
@@ -31,6 +33,18 @@ function App() {
 				</Routes>
 				<Footer />
 			</Router>
+			<ToastContainer
+				position="top-right"
+				autoClose={2000}
+				hideProgressBar
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				theme="colored"
+			/>
 		</>
 	);
 }
