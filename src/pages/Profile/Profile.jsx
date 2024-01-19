@@ -9,6 +9,8 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Button from "@mui/material/Button";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
 
 const Profile = () => {
 	const navigate = useNavigate();
@@ -19,6 +21,7 @@ const Profile = () => {
 	const [role, setRole] = useState();
 	const [open, setOpen] = useState(false);
 	const [openFavDialog, setOpenFavDialog] = useState(false);
+	const [openLoginDialog, setOpenLoginDialog] = useState(false);
 
 	const [watchlist, setWatchlist] = useState([]);
 	const [favourites, setFavourites] = useState([]);
@@ -52,7 +55,15 @@ const Profile = () => {
 		}
 	};
 
+	const goToLoginPage = () => {
+		navigate("/login");
+	};
+
 	const handleClickOpen = (e) => {
+		if (!isLoggedIn) {
+			setOpenLoginDialog(true);
+			return;
+		}
 		setOpen(true);
 	};
 	const handleClose = () => {
@@ -60,10 +71,19 @@ const Profile = () => {
 	};
 
 	const handleFavDiaOpen = (e) => {
+		if (!isLoggedIn) {
+			setOpenLoginDialog(true);
+			return;
+		}
 		setOpenFavDialog(true);
 	};
 	const handleFavDiaClose = () => {
 		setOpenFavDialog(false);
+	};
+
+	const closeLoginDialog = () => {
+		setOpenLoginDialog(false);
+		return;
 	};
 
 	return (
@@ -149,6 +169,18 @@ const Profile = () => {
 								</List>
 								<DialogActions>
 									<Button onClick={handleFavDiaClose}>Close</Button>
+								</DialogActions>
+							</Dialog>
+							<Dialog open={openLoginDialog} onClose={closeLoginDialog}>
+								<DialogTitle id="alert-dialog-title">Login</DialogTitle>
+								<DialogContent>
+									<DialogContentText id="alert-dialog-description">Login to perform this action!</DialogContentText>
+								</DialogContent>
+								<DialogActions>
+									<Button onClick={closeLoginDialog}>Cancel</Button>
+									<Button onClick={goToLoginPage} autoFocus>
+										Login
+									</Button>
 								</DialogActions>
 							</Dialog>
 						</div>

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MovieCard from "../../components/Card/MovieCard";
 import { api } from "../../config/axiosConfig";
-import Container from "@mui/material/Container";
 import { useNavigate, Link } from "react-router-dom";
 
 const Home = () => {
@@ -26,7 +25,6 @@ const Home = () => {
 	};
 
 	return (
-		// <Container>
 		<div className="flex flex-wrap mx-auto w-full justify-center">
 			{movies &&
 				movies.map((movie) => (
@@ -47,7 +45,6 @@ const Home = () => {
 					</span>
 				))}
 		</div>
-		// </Container>
 	);
 };
 
