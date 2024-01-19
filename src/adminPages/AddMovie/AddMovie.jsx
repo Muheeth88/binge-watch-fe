@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import { api } from "../../config/axiosConfig";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const AddMovie = () => {
 	const navigate = useNavigate();
@@ -33,6 +34,7 @@ const AddMovie = () => {
 		e.preventDefault();
 		try {
 			await api.post("/movies/add-movie", formData);
+			toast.success('Movie added to Database!');
 			navigate("/home");
 		} catch (error) {
 			console.error(error.messgae);
