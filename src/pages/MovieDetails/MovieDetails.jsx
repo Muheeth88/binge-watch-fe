@@ -25,6 +25,7 @@ const MovieDetails = () => {
 	const [comment, setComment] = useState("");
 	const [open, setOpen] = useState(false);
 	const [commentId, setCommentId] = useState("");
+	const [openAlert, setOpenAlert] = useState(false)
 
 	useEffect(() => {
 		fetchMovieDetails();
@@ -132,6 +133,33 @@ const MovieDetails = () => {
 		setOpen(false);
 	};
 
+	const handleOpenAlert = async (reviewId) => {
+		if (reviewId) {
+			setCommentId(reviewId);
+			const res = await api.get(`/reviews/get-review/${reviewId}`);
+			setComment(res.data.data.comment);
+		}
+		setOpenAlert(true);
+	}
+
+	const handleCloseAlert = () => {
+		setCommentId("");
+		setComment("");
+		setOpenAlert(false)
+	}
+
+	const handleDeleteComment = async() => {
+		try {
+			await api.delete(`reviews/delete-review/${commentId}`);
+			setCommentId("");
+			setComment("");
+			fetchReviews();
+		} catch (error) {
+			console.error(error.message);
+		}
+			setOpenAlert(false)
+	}
+
 	return (
 		<>
 			<div className="flex justify-center">
@@ -224,7 +252,7 @@ const MovieDetails = () => {
 													<EditIcon color="primary" />
 												</span>
 
-												<span onClick={() => deleteReview(r._id)} className="icon">
+												<span onClick={() => handleOpenAlert(r._id)} className="icon">
 													<DeleteIcon sx={{ color: pink[500] }} />
 												</span>
 											</span>
@@ -270,6 +298,25 @@ const MovieDetails = () => {
 							Post Comment
 						</Button>
 					)}
+				</DialogActions>
+			</Dialog>
+			<Dialog
+				open={openAlert}
+				onClose={handleCloseAlert}
+				aria-labelledby="alert-dialog-title"
+				aria-describedby="alert-dialog-description"
+			>
+				<DialogTitle id="alert-dialog-title">{"Delete comment?"}</DialogTitle>
+				<DialogContent>
+					<DialogContentText id="alert-dialog-description">
+						{comment}
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={handleCloseAlert}>Cancel</Button>
+					<Button onClick={handleDeleteComment} autoFocus>
+						Delete
+					</Button>
 				</DialogActions>
 			</Dialog>
 		</>
