@@ -1,0 +1,5 @@
+.body{
+    margin-bottom: 36px !important;
+    height: calc(100vh - 36px - 64px);    
+    overflow: auto;
+}

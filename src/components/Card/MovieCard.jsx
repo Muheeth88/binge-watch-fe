@@ -11,6 +11,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import AddToQueueIcon from "@mui/icons-material/AddToQueue";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import { api } from "../../config/axiosConfig";
+import { toast } from "react-toastify";
 
 const MovieCard = (props) => {
 	const {
@@ -31,8 +32,10 @@ const MovieCard = (props) => {
 		try {
 			if (!isFavourite) {
 				await api.post(`/favourites/add-to-favourites/${movieId}`);
+				toast.success("Added to favourites!");
 			} else if (isFavourite) {
 				await api.post(`/favourites/remove-from-favourites/${movieId}`);
+				toast.error("Removed from favourites!");
 			}
 			reload();
 		} catch (error) {
@@ -45,8 +48,10 @@ const MovieCard = (props) => {
 		try {
 			if (!isInWatchlist) {
 				await api.post(`/watchlist/add-to-watchlist/${movieId}`);
+				toast.success("Added to Watchlist!");
 			} else if (isInWatchlist) {
 				await api.post(`/watchlist/remove-from-watchlist/${movieId}`);
+				toast.error("Removed from Watchlist!");
 			}
 			reload();
 		} catch (error) {

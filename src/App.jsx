@@ -17,6 +17,7 @@ function App() {
 		<>
 			<Router>
 				<Header />
+				<div className="body">
 				<Routes>
 					<Route path="/" element={<Navigate to="/home" replace />} />
 					<Route path="/login" element={<Login />}></Route>
@@ -31,6 +32,7 @@ function App() {
 						<Route path="/add-movie" element={<AddMovie />} />
 					</Route>
 				</Routes>
+				</div>
 				<Footer />
 			</Router>
 			<ToastContainer

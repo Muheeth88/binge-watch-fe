@@ -47,8 +47,10 @@ const MovieDetails = () => {
 		try {
 			if (!movie.isFavourite) {
 				await api.post(`/favourites/add-to-favourites/${movieId}`);
+				toast.success("Added to favourites!");
 			} else if (movie.isFavourite) {
 				await api.post(`/favourites/remove-from-favourites/${movieId}`);
+				toast.error("Removed from favourites!");
 			}
 			fetchMovieDetails();
 		} catch (error) {
@@ -60,8 +62,10 @@ const MovieDetails = () => {
 		try {
 			if (!movie.isInWatchlist) {
 				await api.post(`/watchlist/add-to-watchlist/${movieId}`);
+				toast.success("Added to Watchlist!");
 			} else if (movie.isInWatchlist) {
 				await api.post(`/watchlist/remove-from-watchlist/${movieId}`);
+				toast.error("Removed from Watchlist!");
 			}
 			fetchMovieDetails();
 		} catch (error) {
@@ -87,7 +91,7 @@ const MovieDetails = () => {
 	const addReview = async () => {
 		try {
 			await api.post(`reviews/add-review/${movieId}`, { comment });
-			toast.success('Comment posted!');
+			toast.success("Comment posted!");
 			fetchReviews();
 			handleClose();
 			setCommentId("");
@@ -100,7 +104,7 @@ const MovieDetails = () => {
 	const editReview = async () => {
 		try {
 			await api.patch(`reviews/edit-review/${commentId}`, { comment });
-			toast.success('Comment edited!');
+			toast.success("Comment edited!");
 			fetchReviews();
 			handleClose();
 			setCommentId("");
@@ -143,7 +147,7 @@ const MovieDetails = () => {
 	const handleDeleteComment = async () => {
 		try {
 			await api.delete(`reviews/delete-review/${commentId}`);
-			toast.success('Comment deleted!');
+			toast.success("Comment deleted!");
 			setCommentId("");
 			setComment("");
 			fetchReviews();
