@@ -1,6 +1,5 @@
-import React from "react";
-import "./style.css"
-import {Link} from 'react-router-dom'
+import "./style.css";
+
 const Header = () => {
 	return (
 		<header className="nav-bar">
@@ -9,8 +8,13 @@ const Header = () => {
 					<img className="h-16 nav-logo" src="/images/NavLogo.png" alt="logo" />
 				</span>
 				<span className="nav-links flex items-center font-medium text-base text-white gap-5 mx-4">
-					<button> <Link to="/home">Home</Link> </button>
-					<button> <Link to="/profile">My Profile</Link></button>
+					<button>
+						<Link to="/home">Home</Link>
+					</button>
+
+					<button>
+						<Link to="/profile">My Profile</Link>
+					</button>
 				</span>
 			</div>
 		</header>

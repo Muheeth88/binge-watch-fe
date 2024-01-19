@@ -37,7 +37,6 @@ const Profile = () => {
 			setFavourites(response.data.data.favouriteMovies);
 			setWatchlist(response.data.data.watchlistMovies);
 			response.data.data.role === "ADMIN" ? setIsAdmin(true) : setIsAdmin(false);
-			console.log(isAdmin);
 		} catch (error) {
 			console.error(error.message);
 		}
@@ -121,7 +120,7 @@ const Profile = () => {
 								</div>
 							</div>
 							<Dialog onClose={handleClose} open={open}>
-								<DialogTitle>My Watchlist</DialogTitle>
+								<DialogTitle>My Watchlist - {watchlist.length}</DialogTitle>
 								<List sx={{ pt: 0 }}>
 									{watchlist &&
 										watchlist.map((w) => (
@@ -137,7 +136,7 @@ const Profile = () => {
 								</DialogActions>
 							</Dialog>
 							<Dialog onClose={handleFavDiaClose} open={openFavDialog}>
-								<DialogTitle>My Favourites</DialogTitle>
+								<DialogTitle>My Favourites - {favourites.length}</DialogTitle>
 								<List sx={{ pt: 0 }}>
 									{favourites &&
 										favourites.map((w) => (
