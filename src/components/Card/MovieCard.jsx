@@ -17,8 +17,10 @@ import DialogActions from "@mui/material/DialogActions";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
+import { useNavigate } from "react-router-dom";
 
 const MovieCard = (props) => {
+	const navigate = useNavigate();
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [openLoginDialog, setOpenLoginDialog] = useState(false);
 	const {
@@ -94,6 +96,10 @@ const MovieCard = (props) => {
 		}
 	};
 
+	const goToLogin = (e) => {
+		e.stopPropagation();
+		navigate("/login");
+	};
 	return (
 		<>
 			<Card className="m-5" sx={{ width: 300, cursor: "pointer" }}>
@@ -161,7 +167,7 @@ const MovieCard = (props) => {
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={(event) => closeLoginDialog(event)}>Cancel</Button>
-					<Button onClick={() => navigate("/login")} autoFocus>
+					<Button onClick={(e) => goToLogin(e)} autoFocus>
 						Login
 					</Button>
 				</DialogActions>

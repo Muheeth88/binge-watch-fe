@@ -17,8 +17,10 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import AddToQueueIcon from "@mui/icons-material/AddToQueue";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import { toast } from "react-toastify";
+import { useNavigate, Link } from "react-router-dom";
 
 const MovieDetails = () => {
+	const navigate = useNavigate();
 	const { movieId } = useParams();
 	const [movie, setMovie] = useState({});
 	const [reviews, setReviews] = useState([]);
@@ -27,17 +29,32 @@ const MovieDetails = () => {
 	const [open, setOpen] = useState(false);
 	const [commentId, setCommentId] = useState("");
 	const [openAlert, setOpenAlert] = useState(false);
-
+	let [formatedDate, setFormatedDate] = useState();
+	const [openLoginDialog, setOpenLoginDialog] = useState(false);
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	useEffect(() => {
 		fetchMovieDetails();
 		fetchReviews();
+		fetchUser();
 	}, []);
+
+	const fetchUser = async () => {
+		try {
+			const username = localStorage.getItem("username");
+			if (username) {
+				setIsLoggedIn(true);
+			}
+		} catch (error) {
+			console.error(error.message);
+		}
+	};
 
 	const fetchMovieDetails = async () => {
 		try {
 			const response = await api.get(`/movies/get-movie/${movieId}`);
 			const movie = response.data.data;
 			setMovie(movie);
+			setFormatedDate(format(new Date(movie.releaseDate), "dd MMMM yyyy"));
 		} catch (error) {
 			console.error(error.message);
 		}
@@ -45,6 +62,10 @@ const MovieDetails = () => {
 
 	const handleFavourite = async () => {
 		try {
+			if (!isLoggedIn) {
+				setOpenLoginDialog(true);
+				return;
+			}
 			if (!movie.isFavourite) {
 				await api.post(`/favourites/add-to-favourites/${movieId}`);
 				toast.success("Added to favourites!");
@@ -60,6 +81,10 @@ const MovieDetails = () => {
 
 	const handleWatchlist = async () => {
 		try {
+			if (!isLoggedIn) {
+				setOpenLoginDialog(true);
+				return;
+			}
 			if (!movie.isInWatchlist) {
 				await api.post(`/watchlist/add-to-watchlist/${movieId}`);
 				toast.success("Added to Watchlist!");
@@ -157,6 +182,10 @@ const MovieDetails = () => {
 		setOpenAlert(false);
 	};
 
+	const closeLoginDialog = (event) => {
+		setOpenLoginDialog(false);
+	};
+
 	return (
 		<>
 			<div className="flex justify-center">
@@ -170,7 +199,7 @@ const MovieDetails = () => {
 								<div className="md:w-2/3 m-4 ">
 									<div className="flex text-gray-500 text-sm m-2">
 										<div className="m-1 font-bold">Released on</div>
-										{/* {movie.releaseDate && <div className="m-1">{format(movie.releaseDate, "dd MMMM yyyy")}</div>} */}
+										<div className="m-1">{formatedDate}</div>
 									</div>
 									<div className="font-bold text-black text-xl m-2">{movie.title}</div>
 									<div className="text-sm text-gray-500 mt-4 m-2">
@@ -311,6 +340,18 @@ const MovieDetails = () => {
 					<Button onClick={handleCloseAlert}>Cancel</Button>
 					<Button onClick={handleDeleteComment} autoFocus>
 						Delete
+					</Button>
+				</DialogActions>
+			</Dialog>
+			<Dialog open={openLoginDialog} onClose={(event) => closeLoginDialog(event)}>
+				<DialogTitle id="alert-dialog-title">Login</DialogTitle>
+				<DialogContent>
+					<DialogContentText id="alert-dialog-description">Login to perform this action!</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={(event) => closeLoginDialog(event)}>Cancel</Button>
+					<Button onClick={() => navigate("/login")} autoFocus>
+						Login
 					</Button>
 				</DialogActions>
 			</Dialog>
