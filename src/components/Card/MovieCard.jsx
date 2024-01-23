@@ -34,6 +34,7 @@ const MovieCard = (props) => {
 		isFavourite,
 		movieId,
 		reload,
+		poster,
 	} = props;
 
 	useEffect(() => {
@@ -103,7 +104,7 @@ const MovieCard = (props) => {
 	return (
 		<>
 			<Card className="m-5" sx={{ width: 300, cursor: "pointer" }}>
-				<CardMedia sx={{ height: 140 }} image="/static/images/cards/contemplative-reptile.jpg" title="green iguana" />
+				<CardMedia sx={{ height: 300 }} image={poster} title="green iguana" />
 				<CardContent>
 					<Typography gutterBottom variant="h5" component="div">
 						{title}
@@ -112,16 +113,13 @@ const MovieCard = (props) => {
 						{tagline}
 					</Typography>
 					<Typography variant="body2" color="text.secondary">
-						Country: {countryOfOrigin}
-					</Typography>
-					<Typography variant="body2" color="text.secondary">
-						Language: {originalLanguage}
-					</Typography>
-					<Typography variant="body2" color="text.secondary">
 						Release Date: {format(releaseDate, "dd MMMM yyyy")}
 					</Typography>
 					<Typography variant="body2" color="text.secondary">
-						Genre: {genre}
+						Genre:
+						{genre.map((g) => (
+							<span key={g}> {g} | </span>
+						))}
 					</Typography>
 				</CardContent>
 				<CardActions>

@@ -194,7 +194,7 @@ const MovieDetails = () => {
 						<div className="overflow-hidden w-full m-4 shadow-sm flex flex-col md:flex-row justify-center">
 							<div className="flex flex-col md:flex-row items-center">
 								<div className=" w-96 overflow-hidden">
-									<img src="https://source.unsplash.com/500x350/?city" alt="" className="" />
+									<img src={movie.poster} alt="" className="" />
 								</div>
 								<div className="md:w-2/3 m-4 ">
 									<div className="flex text-gray-500 text-sm m-2">
@@ -213,7 +213,9 @@ const MovieDetails = () => {
 										<p className="flex">
 											<span className="mx-2 text-lg font-bold text-left">Genre</span>
 											<span className="flex justify-center">
-												<span className="mx-1">{movie.genre}</span>
+												<span className="mx-1">
+													{movie.genre && movie.genre.map((g) => <span key={g}> {g} | </span>)}
+												</span>
 											</span>
 										</p>
 										<p>

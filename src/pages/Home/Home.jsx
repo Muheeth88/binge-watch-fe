@@ -41,6 +41,7 @@ const Home = () => {
 							isFavourite={movie.isFavourite}
 							isInWatchlist={movie.isInWatchlist}
 							reload={fetchMovies}
+							poster={movie.poster}
 						/>
 					</span>
 				))}
