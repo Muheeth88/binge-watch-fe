@@ -11,6 +11,7 @@ import InputLabel from "@mui/material/InputLabel";
 import { api } from "../../config/axiosConfig";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
 
 const AddMovie = () => {
 	const navigate = useNavigate();
@@ -20,21 +21,37 @@ const AddMovie = () => {
 		originalLanguage: "",
 		countryOfOrigin: "",
 		genre: [],
-		releaseDatedate: null,
+		releaseDate: null,
+		poster: null,
 	});
 
 	const [genres, setGenres] = useState([]);
 
 	const handleChange = (e) => {
-		const { name, value } = e.target;
-		setFormData({ ...formData, [name]: value });
+		const { name, value, type, files } = e.target;
+		const inputValue = type === "file" ? files[0] : value;
+		setFormData({ ...formData, [name]: inputValue });
 	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			await api.post("/movies/add-movie", formData);
-			toast.success('Movie added to Database!');
+			const formDataObject = new FormData();
+
+			// Append regular form fields
+			formDataObject.append("title", formData.title);
+			formDataObject.append("tagline", formData.tagline);
+			formDataObject.append("originalLanguage", formData.originalLanguage);
+			formDataObject.append("countryOfOrigin", formData.countryOfOrigin);
+			formDataObject.append("genre", formData.genre);
+			formDataObject.append("releaseDate", formData.releaseDate);
+
+			// Append file input
+			if (formData.poster) {
+				formDataObject.append("poster", formData.poster);
+			}
+			await api.post("/movies/add-movie", formDataObject);
+			toast.success("Movie added to Database!");
 			navigate("/home");
 		} catch (error) {
 			console.error(error.messgae);
@@ -97,6 +114,26 @@ const AddMovie = () => {
 									type="text"
 									placeholder="Add movie caption"
 								/>
+							</div>
+						</div>
+						<div className="my-2 searchBox w-2/3">
+							<label htmlFor="poster" className="filterInput w-full cursor-pointer">
+								Poster
+							</label>
+
+							<div className=" mt-2 w-2/3">
+								<input
+									onChange={handleChange}
+									name="poster"
+									id="poster"
+									type="file"
+									accept="image/*"
+									placeholder="upload file"
+								/>
+								<label className="cursor-pointer" htmlFor="poster">
+									<FileUploadIcon color="primary" className=" mx-2" />{" "}
+									{formData.poster ? formData.poster.name : "Upload File"}
+								</label>
 							</div>
 						</div>
 						<div className="my-2">
