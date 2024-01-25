@@ -36,11 +36,11 @@ const Signup = () => {
 			<div className="bg-white h-auto flex justify-center">
 				<div className="h-auto bg-white -mt-20 w-[80%] md:w-1/2 text-stone-700 font-medium shadow-lg">
 					<form onSubmit={handleSubmit}>
-						<div className="m-4 font-bold">Your E-mail Address </div>{" "}
+						<div className="m-4 font-bold">Your E-mail Address </div>
 						<input
 							name="email"
 							onChange={handleChange}
-              value={formData.email}
+							value={formData.email}
 							placeholder="Email"
 							className="border-2 ml-4 border-gray-400 h-10 w-3/4 px-4 text-gray-400 rounded"
 						/>
@@ -48,7 +48,7 @@ const Signup = () => {
 						<input
 							name="userName"
 							onChange={handleChange}
-              value={formData.userName}
+							value={formData.userName}
 							placeholder="User Name"
 							className="border-2 ml-4 border-gray-400 h-10 w-3/4 text-gray-400 px-4 rounded"
 						/>
@@ -56,7 +56,7 @@ const Signup = () => {
 						<input
 							name="password"
 							onChange={handleChange}
-              value={formData.password}
+							value={formData.password}
 							placeholder="Password"
 							className="border-2 ml-4 border-gray-400 h-10 w-3/4 text-gray-400 px-4 rounded"
 						/>
