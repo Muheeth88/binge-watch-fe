@@ -37,8 +37,8 @@ const Profile = () => {
 			setName(response.data.data.userName);
 			setEmail(response.data.data.email);
 			setRole(response.data.data.role);
-			setFavourites(response.data.data.favouriteMovies);
-			setWatchlist(response.data.data.watchlistMovies);
+			setFavourites(response.data.data.favourites);
+			setWatchlist(response.data.data.watchlist);
 			response.data.data.role === "ADMIN" ? setIsAdmin(true) : setIsAdmin(false);
 		} catch (error) {
 			console.error(error.message);

@@ -6,6 +6,15 @@ import { useNavigate, Link } from "react-router-dom";
 const Home = () => {
 	const navigate = useNavigate();
 	const [movies, setMovies] = useState([]);
+	const [queries, setQueries] = useState({
+		title: "",
+		sort: "title",
+	});
+
+	const handleChange = (e) => {
+		const {name, value} = e.target
+		setQueries({...queries, [name]: value})
+	}
 
 	useEffect(() => {
 		fetchMovies();
@@ -13,7 +22,7 @@ const Home = () => {
 
 	const fetchMovies = async () => {
 		try {
-			const response = await api.get("/movies/all-movies");
+			const response = await api.get(`/movies/all-movies?title=${queries.title}&sort=${queries.sort}`);
 			setMovies(response.data.data.movies);
 		} catch (error) {
 			console.error(error.message);
@@ -25,7 +34,13 @@ const Home = () => {
 	};
 
 	return (
-		<div className="flex flex-wrap mx-auto w-full justify-center">
+		<div >
+			<div>
+				<label htmlFor="title">Search by Name</label>
+				<input type="text" name="title" value={queries.title} onChange={handleChange}/>
+				<button onClick={fetchMovies}>Search</button>
+			</div>
+			<div className="flex flex-wrap flex- mx-auto w-full justify-center">
 			{movies &&
 				movies.map((movie) => (
 					<span key={movie._id} onClick={() => onMovieCardClick(movie._id)}>
@@ -45,6 +60,7 @@ const Home = () => {
 						/>
 					</span>
 				))}
+				</div>
 		</div>
 	);
 };
