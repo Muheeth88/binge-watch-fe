@@ -12,9 +12,9 @@ const Home = () => {
 	});
 
 	const handleChange = (e) => {
-		const {name, value} = e.target
-		setQueries({...queries, [name]: value})
-	}
+		const { name, value } = e.target;
+		setQueries({ ...queries, [name]: value });
+	};
 
 	useEffect(() => {
 		fetchMovies();
@@ -34,33 +34,33 @@ const Home = () => {
 	};
 
 	return (
-		<div >
+		<div>
 			<div>
 				<label htmlFor="title">Search by Name</label>
-				<input type="text" name="title" value={queries.title} onChange={handleChange}/>
+				<input type="text" name="title" value={queries.title} onChange={handleChange} />
 				<button onClick={fetchMovies}>Search</button>
 			</div>
 			<div className="flex flex-wrap flex- mx-auto w-full justify-center">
-			{movies &&
-				movies.map((movie) => (
-					<span key={movie._id} onClick={() => onMovieCardClick(movie._id)}>
-						<MovieCard
-							key={movie._id}
-							movieId={movie._id}
-							title={movie.title}
-							tagline={movie.tagline}
-							releaseDate={movie.releaseDate}
-							countryOfOrigin={movie.countryOfOrigin}
-							originalLanguage={movie.originalLanguage}
-							genre={movie.genre}
-							isFavourite={movie.isFavourite}
-							isInWatchlist={movie.isInWatchlist}
-							reload={fetchMovies}
-							poster={movie.poster}
-						/>
-					</span>
-				))}
-				</div>
+				{movies &&
+					movies.map((movie) => (
+						<span key={movie._id} onClick={() => onMovieCardClick(movie._id)}>
+							<MovieCard
+								key={movie._id}
+								movieId={movie._id}
+								title={movie.title}
+								tagline={movie.tagline}
+								releaseDate={movie.releaseDate}
+								countryOfOrigin={movie.countryOfOrigin}
+								originalLanguage={movie.originalLanguage}
+								genre={movie.genre}
+								isFavourite={movie.isFavourite}
+								isInWatchlist={movie.isInWatchlist}
+								reload={fetchMovies}
+								poster={movie.poster}
+							/>
+						</span>
+					))}
+			</div>
 		</div>
 	);
 };
