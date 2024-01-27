@@ -11,8 +11,11 @@ import ListItemText from "@mui/material/ListItemText";
 import Button from "@mui/material/Button";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
+import { useDispatch } from "react-redux";
+import { setUserName } from "@/features/profile/myProfileSlice";
 
 const Profile = () => {
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [isAdmin, setIsAdmin] = useState(false);
@@ -29,6 +32,8 @@ const Profile = () => {
 	useEffect(() => {
 		fetchUser();
 	}, []);
+
+	
 
 	const fetchUser = async () => {
 		try {
@@ -49,6 +54,7 @@ const Profile = () => {
 		try {
 			await api.post("/users/logout");
 			localStorage.clear();
+			dispatch(setUserName(""))
 			navigate("/login");
 		} catch (error) {
 			console.log(error.message);

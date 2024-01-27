@@ -3,9 +3,12 @@ import "./style.css";
 import Container from "@mui/material/Container";
 import { useNavigate, Link } from "react-router-dom";
 import { api } from "../../config/axiosConfig";
+import { useSelector, useDispatch } from 'react-redux'
+import { setUserName } from "@/features/profile/myProfileSlice";
 
 const Login = () => {
 	const navigate = useNavigate();
+	const dispatch = useDispatch()
 	const [formData, setFormData] = useState({
 		email: "",
 		password: "",
@@ -23,6 +26,7 @@ const Login = () => {
 			localStorage.setItem("jwt", response?.data?.data?.jwtToken);
 			localStorage.setItem("role", response?.data?.data?.user?.role);
 			localStorage.setItem("username", response?.data?.data.user?.userName);
+			dispatch(setUserName(response?.data?.data.user?.userName))
 			navigate("/home");
 		} catch (error) {
 			console.error("Error submitting the form:", error);
