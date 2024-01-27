@@ -16,9 +16,16 @@ const Home = () => {
 		setQueries({ ...queries, [name]: value });
 	};
 
+	const resetSearch = () => {
+		setQueries({
+			title: "",
+			sort: "title",
+		})
+	}
+
 	useEffect(() => {
 		fetchMovies();
-	}, []);
+	}, [queries]);
 
 	const fetchMovies = async () => {
 		try {
@@ -39,6 +46,7 @@ const Home = () => {
 				<label htmlFor="title">Search by Name</label>
 				<input type="text" name="title" value={queries.title} onChange={handleChange} />
 				<button onClick={fetchMovies}>Search</button>
+				<button onClick={resetSearch}>Reset</button>
 			</div>
 			<div className="flex flex-wrap flex- mx-auto w-full justify-center">
 				{movies &&
