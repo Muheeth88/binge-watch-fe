@@ -1,8 +1,14 @@
 import React from 'react'
-
+import "./Loader.css"
 const Loader = () => {
   return (
-    <div>Loader...</div>
+    <div>
+    <div className='epage'>
+    <div class="loader"></div>
+
+    </div>
+    
+    </div>
   )
 }
 
