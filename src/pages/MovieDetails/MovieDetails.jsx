@@ -18,6 +18,7 @@ import AddToQueueIcon from "@mui/icons-material/AddToQueue";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import { toast } from "react-toastify";
 import { useNavigate, Link } from "react-router-dom";
+import CustomDialog from "@/components/Dialog/CustomDialog";
 
 const MovieDetails = () => {
 	const navigate = useNavigate();
@@ -154,19 +155,17 @@ const MovieDetails = () => {
 		setOpen(false);
 	};
 
-	const handleOpenAlert = async (reviewId) => {
-		if (reviewId) {
-			setCommentId(reviewId);
-			const res = await api.get(`/reviews/get-review/${reviewId}`);
-			setComment(res.data.data.comment);
+	// ---------------- Delete Comment
+	const onDialgInit = async (review) => {
+		if (review._id) {
+			setCommentId(review._id);
+			setComment(review.comment);
 		}
-		setOpenAlert(true);
 	};
 
 	const handleCloseAlert = () => {
 		setCommentId("");
 		setComment("");
-		setOpenAlert(false);
 	};
 
 	const handleDeleteComment = async () => {
@@ -179,8 +178,9 @@ const MovieDetails = () => {
 		} catch (error) {
 			console.error(error.message);
 		}
-		setOpenAlert(false);
 	};
+
+	// ---------------------------
 
 	const closeLoginDialog = (event) => {
 		setOpenLoginDialog(false);
@@ -280,8 +280,16 @@ const MovieDetails = () => {
 													<EditIcon color="primary" />
 												</span>
 
-												<span onClick={() => handleOpenAlert(r._id)} className="icon">
-													<DeleteIcon sx={{ color: pink[500] }} />
+												<span onClick={() => onDialgInit(r)}>
+													<CustomDialog
+														triggerBtnText={<DeleteIcon sx={{ color: pink[500] }} />}
+														heading={"You are about to delete the comment!"}
+														desc={comment}
+														handleCancel={handleCloseAlert}
+														handleContinue={handleDeleteComment}
+														continueBtnText={"Delete"}
+														cancelBtnText={"Cancel"}
+													/>
 												</span>
 											</span>
 										)}
@@ -326,23 +334,6 @@ const MovieDetails = () => {
 							Post Comment
 						</Button>
 					)}
-				</DialogActions>
-			</Dialog>
-			<Dialog
-				open={openAlert}
-				onClose={handleCloseAlert}
-				aria-labelledby="alert-dialog-title"
-				aria-describedby="alert-dialog-description"
-			>
-				<DialogTitle id="alert-dialog-title">{"Delete comment?"}</DialogTitle>
-				<DialogContent>
-					<DialogContentText id="alert-dialog-description">{comment}</DialogContentText>
-				</DialogContent>
-				<DialogActions>
-					<Button onClick={handleCloseAlert}>Cancel</Button>
-					<Button onClick={handleDeleteComment} autoFocus>
-						Delete
-					</Button>
 				</DialogActions>
 			</Dialog>
 			<Dialog open={openLoginDialog} onClose={(event) => closeLoginDialog(event)}>
