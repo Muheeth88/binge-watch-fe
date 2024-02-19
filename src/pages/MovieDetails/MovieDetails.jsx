@@ -19,6 +19,9 @@ import AddBoxIcon from "@mui/icons-material/AddBox";
 import { toast } from "react-toastify";
 import { useNavigate, Link } from "react-router-dom";
 import CustomDialog from "@/components/Dialog/CustomDialog";
+import Box from "@mui/material/Box";
+import Rating from "@mui/material/Rating";
+import RatingComp from "@/components/Rating/RatingComp";
 
 const MovieDetails = () => {
 	const navigate = useNavigate();
@@ -33,10 +36,13 @@ const MovieDetails = () => {
 	let [formatedDate, setFormatedDate] = useState();
 	const [openLoginDialog, setOpenLoginDialog] = useState(false);
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [rating, setRating] = React.useState(0);
+	const [avgRating, setAvgRating] = React.useState(0);
 	useEffect(() => {
 		fetchMovieDetails();
 		fetchReviews();
 		fetchUser();
+		fetchAvgRating();
 	}, []);
 
 	const fetchUser = async () => {
@@ -56,6 +62,16 @@ const MovieDetails = () => {
 			const movie = response.data.data;
 			setMovie(movie);
 			setFormatedDate(format(new Date(movie.releaseDate), "dd MMMM yyyy"));
+		} catch (error) {
+			console.error(error.message);
+		}
+	};
+
+	const fetchAvgRating = async () => {
+		try {
+			const response = await api.get(`ratings/get-avg-rating/${movieId}`);
+			const avgRating = response?.data?.data?.avg_rating;
+			setAvgRating(avgRating);
 		} catch (error) {
 			console.error(error.message);
 		}
@@ -163,6 +179,27 @@ const MovieDetails = () => {
 		}
 	};
 
+	const onRatingDialgInit = async () => {
+
+	}
+
+	const handleCancelRating = () => {
+		setRating(0)
+	}
+
+	const handleRateMovie = async () => {
+		try {
+			await api.post(`ratings/give-rating/${movieId}/${rating}`);
+			fetchAvgRating();
+		} catch (error) {
+			console.error(error.message);
+		}
+	}
+
+	const pickRating = (pickedRating) => {
+		setRating(pickedRating)
+	}
+
 	const handleCloseAlert = () => {
 		setCommentId("");
 		setComment("");
@@ -218,9 +255,27 @@ const MovieDetails = () => {
 												</span>
 											</span>
 										</p>
-										<p>
+										<p className="flex items-center">
 											<span className="mx-2 text-lg font-bold text-left">Rating</span>
-											<span> 9/ 10</span>
+											<span className="pt-2">
+												<Box sx={{ "& > legend": { mt: 2 } }}>
+													<Rating name="read-only" value={avgRating} readOnly />
+												</Box>
+											</span>
+											{ avgRating && <span className="font-medium text-gray-600 mx-3">{avgRating}</span>}
+										</p>
+										<p>
+											<span onClick={() => onRatingDialgInit()}>
+												<CustomDialog
+													triggerBtnText={"Rate Movie"}
+													heading={"Give Rating to the Movie!"}
+													desc={<RatingComp pickRating={pickRating}/>}
+													handleCancel={handleCancelRating}
+													handleContinue={handleRateMovie}
+													continueBtnText={"Rate"}
+													cancelBtnText={"Cancel"}
+												/>
+											</span>
 										</p>
 									</div>
 									<div className="my-2">
