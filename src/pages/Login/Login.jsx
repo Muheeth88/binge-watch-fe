@@ -48,7 +48,7 @@ const Login = () => {
 						<div className="text-xl cursor-pointer flex flex-col justify-center items-center mt-5 md:mt-0">
 							<h1 className="font-semibold text-3xl text-gray-700 m-2">Log In</h1>
 						</div>
-						<form onSubmit={handleSubmit(onSubmit)}>
+						<form onSubmit={handleSubmit(onSubmit)} noValidate>
 							<div className="flex flex-col justify-center items-center mt-10 md:mt-4 space-y-4 md:space-y-4">
 								{errors.root && <div className="text-red-500">{errors.root.message}</div>}
 								<div className="">
