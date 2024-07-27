@@ -7,16 +7,19 @@ import { setUserName } from "@/features/profile/myProfileSlice";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { toast } from "sonner";
+import { useState } from "react";
 
 const Login = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+	const [loading, setLoading] = useState(false)
 
 	const loginFormSchema = z.object({
 		email: z.string().email(),
-		password: z.string().min(6),
+		password: z.string().min(4),
 	});
-
+	toast
 	const {
 		register,
 		handleSubmit,
@@ -27,16 +30,18 @@ const Login = () => {
 	});
 
 	const onSubmit = async (formData) => {
+		setLoading(true)
 		try {
 			const response = await api.post("/users/login", formData);
 			localStorage.setItem("jwt", response?.data?.data?.jwtToken);
 			localStorage.setItem("role", response?.data?.data?.user?.role);
 			localStorage.setItem("username", response?.data?.data.user?.userName);
 			dispatch(setUserName(response?.data?.data.user?.userName));
+			setLoading(false)
 			navigate("/home");
 		} catch (error) {
-			setError("root", { message: error.message });
-			console.error("Error submitting the form:", error);
+			setLoading(false)
+			toast("Something went wrong!", {description: error?.response?.data?.message, action: {label: "Close"}})
 		}
 	};
 
@@ -72,7 +77,8 @@ const Login = () => {
 							<div className="text-center mt-7">
 								<button
 									type="submit"
-									className="uppercase px-24 md:px-[118px] lg:px-[140px] py-2 rounded-md text-white bg-violet-500 hover:bg-violet-600  font-medium "
+									disabled={loading}
+									className={`uppercase px-24 md:px-[118px] lg:px-[140px] py-2 rounded-md text-white bg-violet-500 hover:bg-violet-600  font-medium `}
 								>
 									{isSubmitting ? "Loading..." : "Login"}
 								</button>

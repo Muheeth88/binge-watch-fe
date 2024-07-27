@@ -2,8 +2,11 @@ import React from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { api } from "../../config/axiosConfig";
 import { useState } from "react";
+import { toast } from "sonner";
+
 
 const Signup = () => {
+	const [loading, setLoading] =useState(false)
 	const navigate = useNavigate();
 	const [formData, setFormData] = useState({
 		email: "",
@@ -18,11 +21,16 @@ const Signup = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		setLoading(true)
 		try {
-			await api.post("/users/register", formData);
-			navigate("/login");
+			const response = await api.post("/users/register", formData);
+			if (response) {
+				navigate("/login");
+			}
+			setLoading(false)
 		} catch (error) {
-			console.error("Error submitting the form:", error);
+			setLoading(false)
+			toast("Something went wrong!", {description: error?.response?.data?.message, action: {label: "Close"}})
 		}
 	};
 	return (
@@ -30,7 +38,6 @@ const Signup = () => {
 			<div className="bg-purple-900 h-60 flex items-center justify-center">
 				<div className="flex flex-col max-w-4xl items-center justify-center">
 					<div className=" text-white text-4xl font-bold">Register</div>
-					<div className="m-2 text-white">Register to BingeWatch by filling this form.</div>
 				</div>
 			</div>
 			<div className="bg-white h-auto flex justify-center">
@@ -62,15 +69,16 @@ const Signup = () => {
 						/>
 						<div>
 							<button
+								disabled={loading}
 								type="submit"
 								className="bg-purple-900 p-2 m-4 text-white w-max font-normal hover:bg-purple-700 cursor-pointer"
 							>
-								Register
+								{loading ? "Loading..." : "Register" }
 							</button>
 						</div>
 					</form>
 					<div className="text-center mt-2  mb-6 flex flex-col">
-						<a className="text-sm font-bold text-gray-400 hover:text-violet-500 m-1">Alredy have an account? Login!</a>
+						<Link to="/login" className="text-sm font-bold text-gray-400 hover:text-violet-500 m-1">Alredy have an account? Login!</Link>
 					</div>
 				</div>
 			</div>

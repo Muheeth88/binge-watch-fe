@@ -14,6 +14,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "./components/Loader/Loader";
 const Home = lazy(() => import("./pages/Home/Home.jsx"))
+import { Toaster } from "@/components/ui/sonner"
 
 function App() {
 	return (
@@ -57,6 +58,7 @@ function App() {
 				pauseOnHover
 				theme="colored"
 			/>
+			<Toaster position="top-right"/>
 		</>
 	);
 }

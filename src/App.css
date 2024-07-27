@@ -3,3 +3,8 @@
     height: calc(100vh - 36px - 64px);    
     overflow: auto;
 }
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
