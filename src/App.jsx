@@ -15,6 +15,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Loader from "./components/Loader/Loader";
 const Home = lazy(() => import("./pages/Home/Home.jsx"))
 import { Toaster } from "@/components/ui/sonner"
+import { Toaster as Toaster2 } from "@/components/ui/toaster"
 
 function App() {
 	return (
@@ -59,6 +60,7 @@ function App() {
 				theme="colored"
 			/>
 			<Toaster position="top-right"/>
+			<Toaster2 position="center" />
 		</>
 	);
 }

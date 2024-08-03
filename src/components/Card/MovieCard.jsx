@@ -11,16 +11,12 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import AddToQueueIcon from "@mui/icons-material/AddToQueue";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import { api } from "../../config/axiosConfig";
-import { toast } from "react-toastify";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogActions from "@mui/material/DialogActions";
-import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import { useNavigate } from "react-router-dom";
+import { useToast } from "@/components/ui/use-toast"
+import LoginPopup from "@/utils/Dialogs/LoginPopup";
+import LoginDialog from "@/utils/Dialogs/LoginDialog";
 
 const MovieCard = (props) => {
-	const navigate = useNavigate();
+	const { toast } = useToast()
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [openLoginDialog, setOpenLoginDialog] = useState(false);
 	const {
@@ -50,11 +46,6 @@ const MovieCard = (props) => {
 		} catch (error) {
 			console.error(error.message);
 		}
-	};
-
-	const closeLoginDialog = (event) => {
-		event.stopPropagation();
-		setOpenLoginDialog(false);
 	};
 
 	const handleFavourite = async (event, movieId) => {
@@ -97,10 +88,6 @@ const MovieCard = (props) => {
 		}
 	};
 
-	const goToLogin = (e) => {
-		e.stopPropagation();
-		navigate("/login");
-	};
 	return (
 		<>
 			<Card className="m-5" sx={{ width: 300, cursor: "pointer" }}>
@@ -123,53 +110,22 @@ const MovieCard = (props) => {
 					</Typography>
 				</CardContent>
 				<CardActions>
-					{!isFavourite && (
-						<Button onClick={(e) => handleFavourite(e, movieId)} size="small">
-							<span className="icon mx-2">
-								<FavoriteBorderIcon color="primary" />
-							</span>
-							Favourite
-						</Button>
-					)}
+					<Button onClick={(e) => handleFavourite(e, movieId)} size="small">
+						<span className="icon mx-2">
+							{isFavourite ? <FavoriteIcon color="primary" /> : <FavoriteBorderIcon color="primary" />}
+						</span>
+						{isFavourite ? "Favourited" : "Favourite"}
+					</Button>
 
-					{isFavourite && (
-						<Button onClick={(e) => handleFavourite(e, movieId)} size="small">
-							<span className="icon mx-2">
-								<FavoriteIcon color="primary" />
-							</span>
-							Favourited
-						</Button>
-					)}
-					{!isInWatchlist && (
-						<Button onClick={(e) => handleWatchlist(e, movieId)} size="small">
-							<span className="icon mx-2">
-								<AddBoxIcon />
-							</span>
-							Watchlist
-						</Button>
-					)}
-					{isInWatchlist && (
-						<Button onClick={(e) => handleWatchlist(e, movieId)} size="small">
-							<span className="icon mx-2">
-								<AddToQueueIcon />
-							</span>
-							Watchlisted
-						</Button>
-					)}
+					<Button onClick={(e) => handleWatchlist(e, movieId)} size="small">
+						<span className="icon mx-2">{isInWatchlist ? <AddToQueueIcon /> : <AddBoxIcon />}</span>
+						{isInWatchlist ? "Watchlisted" : "Watchlist"}
+					</Button>
 				</CardActions>
 			</Card>
-			<Dialog open={openLoginDialog} onClose={(event) => closeLoginDialog(event)}>
-				<DialogTitle id="alert-dialog-title">Login</DialogTitle>
-				<DialogContent>
-					<DialogContentText id="alert-dialog-description">Login to perform this action!</DialogContentText>
-				</DialogContent>
-				<DialogActions>
-					<Button onClick={(event) => closeLoginDialog(event)}>Cancel</Button>
-					<Button onClick={(e) => goToLogin(e)} autoFocus>
-						Login
-					</Button>
-				</DialogActions>
-			</Dialog>
+
+			<LoginDialog openLoginDialog={openLoginDialog} setOpenLoginDialog={setOpenLoginDialog}/>
+			{openLoginDialog && <LoginPopup/>}
 		</>
 	);
 };
